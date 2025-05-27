@@ -12,7 +12,6 @@
   "dependencies": {
     "react": "19.0.0",
     "react-native": "0.79.2",
-    "react-native-safe-area-context": "^5.4.1",
     "save": "^2.9.0"
   },
   "devDependencies": {
