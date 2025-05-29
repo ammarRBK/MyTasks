@@ -8,27 +8,34 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+
+import Header from './components/header.tsx'
+
+// import {
+//   Colors,
+//   DebugInstructions,
+//   Header,
+//   LearnMoreLinks,
+//   ReloadInstructions,
+// } from 'react-native/Libraries/NewAppScreen';
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   const safePadding = '5%';
 
   return (
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}> Hello from App</Text>
-      </View>
+      <SafeAreaProvider>
+        <SafeAreaView>
+          <Header></Header>
+          <Text style={styles.sectionTitle}> Hello from App</Text>
+        </SafeAreaView>
+      </SafeAreaProvider>
   );
 }
 
