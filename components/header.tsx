@@ -6,26 +6,28 @@ const Header= () =>{
     
     return (
         <View style={styles.headerContainer}>
-            <Text style={styles.textHeader}>Hello from header component</Text>
             <Text>
                 <Icon name="menu" size={20} color={"white"}/>
             </Text>
+            <Text style={styles.textHeader}>مهامي اليومية</Text>
         </View>
     )
 }
 
 const styles= StyleSheet.create({
     headerContainer:{
-        backgroundColor: "lightblue",
+        backgroundColor: "#40b1ff",
         flexDirection: "row",
-        height: 40,
+        height: 45,
         alignItems: "center",
         justifyContent: "space-between",
         padding: 10
     },
     textHeader:{
         color: "white",
-        marginLeft: 50
+        alignItems: "flex-start",
+        fontWeight: "bold",
+        fontSize: 15
     }
 })
 

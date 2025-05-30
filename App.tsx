@@ -1,9 +1,11 @@
 import React from 'react';
 import {
+  FlatList,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -20,6 +22,35 @@ import Header from './components/header.tsx'
 //   ReloadInstructions,
 // } from 'react-native/Libraries/NewAppScreen';
 
+const noDataComp= ()=>{
+  return(
+    <View >
+      <Text>لا يوجد مهام
+         قم بإضافة مهامك اليومية للاستمتاع بإدارتها وتنظيم يومك</Text>
+    </View>
+  )
+}
+
+type tasksType={
+  id: string,
+  title: string
+}
+
+const mytasks:tasksType[] = [
+  {
+    id: "1",
+    title: "الذهاب الى العمل"
+  },
+  {
+    id: "2",
+    title: "البدء بالعمل وتجهيز المكتب بتشغيل اللابتوب وهاتف العمل"
+  },
+  {
+    id: "3",
+    title: "الانتهاء من العمل والذهاب للمنزل"
+  }
+];
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -27,35 +58,34 @@ function App(): React.JSX.Element {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
 
-  const safePadding = '5%';
-
   return (
       <SafeAreaProvider>
         <SafeAreaView>
           <Header></Header>
-          <Text style={styles.sectionTitle}> Hello from App</Text>
+          <FlatList
+            data={mytasks}
+            renderItem={(task)=>{
+              return(
+                <TouchableOpacity onPress={()=> {console.log("item with id "+task.item.id+" pressed")}}>
+                  <Text>{task.item.title}</Text>
+                </TouchableOpacity>
+              )
+            }}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={noDataComp}>
+          </FlatList>
         </SafeAreaView>
       </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  nodatacom:{
+    alignItems: "center",
+    flex: 1,
+    fontWeight: 'bold',
+    fontSize: 45
+  }
 });
 
 export default App;
