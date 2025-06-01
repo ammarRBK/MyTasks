@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {
+  Alert,
   FlatList,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -55,12 +54,36 @@ const mytasks:tasksType[] = [
   }
 ];
 
+
+
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
+  const createAlert= ()=>{
+    Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
+      [
+        {
+          text: "إلغاء",
+          style: "cancel"
+        },
+        {
+          text: "تعديل",
+          onPress: ()=> console.log("Edit Button Pressed"),
+        },
+        {
+          text: "حذف المهمة",
+          onPress: ()=> console.log("Delete Button pressed"),
+        },
+        
+      ],
+      {
+        cancelable: true
+      }
+    )
+  }
 
   return (
       <SafeAreaProvider>
@@ -70,7 +93,7 @@ function App(): React.JSX.Element {
             data={mytasks}
             renderItem={(task)=>{
               return(
-                <View style={styles.tasksBody}>
+                <TouchableOpacity style={styles.tasksBody} onLongPress={createAlert}>
                    <BouncyCheckbox
                     isChecked={task.item.isDone ? true : false}
                     disabled={false}
@@ -80,7 +103,7 @@ function App(): React.JSX.Element {
                     size={25}
                     iconStyle={{ marginLeft: 8 }}/>
                   <Text style={styles.taskTitle}>{task.item.title}</Text>
-                </View>
+                </TouchableOpacity>
               )
             }}
             keyExtractor={item => item.id}
@@ -111,7 +134,8 @@ const styles = StyleSheet.create({
   },
   taskTitle: {
     fontSize: 18,
-    paddingRight: 20
+    paddingRight: 20,
+    margin: 10
   }
 });
 
