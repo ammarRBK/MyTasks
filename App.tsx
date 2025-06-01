@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   ScrollView,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 import Header from './components/header.tsx'
 
 // import {
@@ -24,8 +24,8 @@ import Header from './components/header.tsx'
 
 const noDataComp= ()=>{
   return(
-    <View >
-      <Text>لا يوجد مهام
+    <View style={styles.nodatacom}>
+      <Text style={{color:"white", padding: 40, alignItems:"center", fontWeight:"bold", fontSize: 20, textAlignVertical:"center"}}>لا يوجد مهام
          قم بإضافة مهامك اليومية للاستمتاع بإدارتها وتنظيم يومك</Text>
     </View>
   )
@@ -33,21 +33,25 @@ const noDataComp= ()=>{
 
 type tasksType={
   id: string,
-  title: string
+  title: string,
+  isDone: boolean
 }
 
 const mytasks:tasksType[] = [
   {
     id: "1",
-    title: "الذهاب الى العمل"
+    title: "الذهاب الى العمل",
+    isDone: false
   },
   {
     id: "2",
-    title: "البدء بالعمل وتجهيز المكتب بتشغيل اللابتوب وهاتف العمل"
+    title: "البدء بالعمل وتجهيز المكتب بتشغيل اللابتوب وهاتف العمل",
+    isDone: false
   },
   {
     id: "3",
-    title: "الانتهاء من العمل والذهاب للمنزل"
+    title: "الانتهاء من العمل والذهاب للمنزل",
+    isDone: false
   }
 ];
 
@@ -66,13 +70,22 @@ function App(): React.JSX.Element {
             data={mytasks}
             renderItem={(task)=>{
               return(
-                <TouchableOpacity onPress={()=> {console.log("item with id "+task.item.id+" pressed")}}>
-                  <Text>{task.item.title}</Text>
-                </TouchableOpacity>
+                <View style={styles.tasksBody}>
+                   <BouncyCheckbox
+                    isChecked={task.item.isDone ? true : false}
+                    disabled={false}
+                    onPress={()=> {console.log("item with id "+task.item.id+" pressed")}}
+                    fillColor="green"
+                    unFillColor="#757575"
+                    size={25}
+                    iconStyle={{ marginLeft: 8 }}/>
+                  <Text style={styles.taskTitle}>{task.item.title}</Text>
+                </View>
               )
             }}
             keyExtractor={item => item.id}
-            ListEmptyComponent={noDataComp}>
+            ListEmptyComponent={noDataComp}
+            >
           </FlatList>
         </SafeAreaView>
       </SafeAreaProvider>
@@ -81,10 +94,24 @@ function App(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   nodatacom:{
+    backgroundColor: "red",
     alignItems: "center",
-    flex: 1,
-    fontWeight: 'bold',
-    fontSize: 45
+    marginTop: 250,
+    borderRadius: 20
+  },
+  tasksBody:{
+    height: "auto",
+    width: "auto",
+    flexDirection: "row",
+    margin: 13,
+    overflow: 'hidden',
+    borderRadius: 50,
+    borderColor: "blue",
+    backgroundColor: "pink",
+  },
+  taskTitle: {
+    fontSize: 18,
+    paddingRight: 20
   }
 });
 
