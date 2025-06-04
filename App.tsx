@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+//import checkbox component
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+//import Header component from components folder
 import Header from './components/header.tsx'
+import Icon from '@react-native-vector-icons/ionicons';
 
 // import {
 //   Colors,
@@ -21,7 +24,9 @@ import Header from './components/header.tsx'
 //   ReloadInstructions,
 // } from 'react-native/Libraries/NewAppScreen';
 
+//component well be show and tells the user to add tasks when the tasks array is empty
 const noDataComp= ()=>{
+  
   return(
     <View style={styles.nodatacom}>
       <Text style={{color:"white", padding: 40, alignItems:"center", fontWeight:"bold", fontSize: 20, textAlignVertical:"center"}}>لا يوجد مهام
@@ -30,6 +35,7 @@ const noDataComp= ()=>{
   )
 }
 
+//assigin task’s types
 type tasksType={
   id: string,
   title: string,
@@ -54,14 +60,15 @@ const mytasks:tasksType[] = [
   }
 ];
 
-
-
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+
+  
+  // const isDarkMode = useColorScheme() === 'dark';
 
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
+//build Alert that will pupub specified buttons when user long-press on a task 
   const createAlert= ()=>{
     Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
       [
@@ -90,6 +97,7 @@ function App(): React.JSX.Element {
         <SafeAreaView>
           <Header></Header>
           <FlatList
+            style={{paddingBottom: 80}}
             data={mytasks}
             renderItem={(task)=>{
               return(
@@ -97,8 +105,11 @@ function App(): React.JSX.Element {
                    <BouncyCheckbox
                     isChecked={task.item.isDone ? true : false}
                     disabled={false}
+//onpress runs change task status function
                     onPress={()=> {console.log("item with id "+task.item.id+" pressed")}}
+//when task is completed the checkbox color will be green
                     fillColor="green"
+//when task isn’t completed the checkbox color will be #757575
                     unFillColor="#757575"
                     size={25}
                     iconStyle={{ marginLeft: 8 }}/>
@@ -110,6 +121,11 @@ function App(): React.JSX.Element {
             ListEmptyComponent={noDataComp}
             >
           </FlatList>
+{/* //floating action button */}
+          <TouchableOpacity onPress={()=> console.log('FAB button pressed')} style={styles.addButtonContainer}>
+            <Icon name='add' size={40} color={'white'}></Icon>
+          </TouchableOpacity>
+          
         </SafeAreaView>
       </SafeAreaProvider>
   );
@@ -136,7 +152,27 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingRight: 20,
     margin: 10
-  }
+  },
+  addButtonContainer:{
+    position: 'absolute',
+    left: 30,
+    top: 700,
+    
+    borderRadius: 20,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 0.3
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
 });
 
 export default App;

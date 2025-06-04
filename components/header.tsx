@@ -6,9 +6,11 @@ const Header= () =>{
     
     return (
         <View style={styles.headerContainer}>
+{/* //side menu Icon */}
             <Text>
                 <Icon name="menu" size={20} color={"white"}/>
             </Text>
+{/* //page title */}
             <Text style={styles.textHeader}>مهامي اليومية</Text>
         </View>
     )
