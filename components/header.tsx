@@ -20,10 +20,10 @@ const styles= StyleSheet.create({
     headerContainer:{
         backgroundColor: "#40b1ff",
         flexDirection: "row",
-        height: 45,
+        height: 50,
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 10
+        padding: 15
     },
     textHeader:{
         color: "white",
