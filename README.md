@@ -1,13 +1,36 @@
-# MyTasks
-MyTasks is a simple and efficient mobile App built with [**React Native**](https://reactnative.dev). it helps to manage daily tasks by add, mark as done, delete tasks.
+# 📋 MyTasks
+
+**MyTasks** is a simple and efficient mobile application built with [React Native](https://reactnative.dev). It helps users manage their daily tasks by allowing them to **add**, **mark as done**, and **delete** tasks with ease.
+
+# Featuers:
+-   Add new Tasks
+-   Mark Tasks as completed
+-   Dlete Tasks
 
 # Getting Started
 
+
+## Step 1: Clone the repository
+
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-## Step 2: Build and run your app
+```bash
+git clone https://github.com/your-username/MyTasks.git
+cd MyTasks
+```
+## Step 2: Install dependencies:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+```bash
+# Using npm
+npm install
+
+# OR using Yarn
+yarn install
+```
+
+## Step 3: Build and run your app
+
+With Metro running, open a new terminal window/pane from the root of your project, and use one of the following commands to build and run your Android or iOS app:
 
 ### Android
 

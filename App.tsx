@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   Alert,
   FlatList,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -35,6 +36,24 @@ const noDataComp= ()=>{
   )
 }
 
+//Modal Component
+const modalComp= (showModal:boolean) =>{
+  return(
+    <Modal
+      //if true the modal will bee visible
+            visible= {showModal}
+            animationType='slide'
+      //modal background to fit whole screeen
+            transparent={false}
+      //callback will be run when user press on hardware backbutton 
+            onRequestClose={()=> showModal= false}
+            statusBarTranslucent= {true}
+          >
+            
+          </Modal>
+  )
+}
+
 //assigin task’s types
 type tasksType={
   id: string,
@@ -62,7 +81,6 @@ const mytasks:tasksType[] = [
 
 function App(): React.JSX.Element {
 
-  
   // const isDarkMode = useColorScheme() === 'dark';
 
   // const backgroundStyle = {
@@ -121,11 +139,13 @@ function App(): React.JSX.Element {
             ListEmptyComponent={noDataComp}
             >
           </FlatList>
-{/* //floating action button */}
+
+          
+{/* floating action button */}
           <TouchableOpacity onPress={()=> console.log('FAB button pressed')} style={styles.addButtonContainer}>
             <Icon name='add' size={40} color={'white'}></Icon>
           </TouchableOpacity>
-          
+
         </SafeAreaView>
       </SafeAreaProvider>
   );
