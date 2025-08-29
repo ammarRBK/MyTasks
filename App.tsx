@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   Alert,
+  Button,
   FlatList,
   Modal,
   StyleSheet,
@@ -36,24 +37,6 @@ const noDataComp= ()=>{
   )
 }
 
-//Modal Component
-const modalComp= (showModal:boolean) =>{
-  return(
-    <Modal
-      //if true the modal will bee visible
-            visible= {showModal}
-            animationType='slide'
-      //modal background to fit whole screeen
-            transparent={false}
-      //callback will be run when user press on hardware backbutton 
-            onRequestClose={()=> showModal= false}
-            statusBarTranslucent= {true}
-          >
-            
-          </Modal>
-  )
-}
-
 //assigin task’s types
 type tasksType={
   id: string,
@@ -86,6 +69,8 @@ function App(): React.JSX.Element {
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
+
+  const [showModal, setShowModal]= useState(false);
 //build Alert that will pupub specified buttons when user long-press on a task 
   const createAlert= ()=>{
     Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
@@ -140,9 +125,30 @@ function App(): React.JSX.Element {
             >
           </FlatList>
 
-          
-{/* floating action button */}
-          <TouchableOpacity onPress={()=> console.log('FAB button pressed')} style={styles.addButtonContainer}>
+{/* modal component           */}
+           <Modal
+        //if true the modal will bee visible
+            visible= {showModal}
+            animationType='slide'
+      //modal background to fit whole screeen
+            transparent={false}
+      //callback will be run when user press on hardware backbutton 
+            onRequestClose={()=> setShowModal(!showModal)}
+            statusBarTranslucent= {true}
+          >
+            <View style={styles.modalStyle}>
+              <View style={styles.modalContent}>
+                <Text style={{fontSize: 20}}>
+                  Hello from Modal
+                </Text>
+                <Button title='Hide Modal' onPress={()=> setShowModal(!showModal)}>
+                  
+                </Button>
+              </View>
+            </View>     
+          </Modal>
+{/* add task button will pop up a modal */}
+          <TouchableOpacity onPress={()=> setShowModal(!showModal)} style={styles.addButtonContainer}>
             <Icon name='add' size={40} color={'white'}></Icon>
           </TouchableOpacity>
 
@@ -193,6 +199,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  modalStyle:{
+   justifyContent: "center",
+   flex: 1,
+   alignItems: "center"
+  },
+  modalContent:{
+    borderRadius: 30,
+    backgroundColor: "white",
+    alignItems: "center",
+    textAlign: "center",
+  }
 });
 
 export default App;
