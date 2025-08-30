@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
+  TextInput
 } from 'react-native';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -69,8 +70,10 @@ function App(): React.JSX.Element {
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
-
+//show Modal state
   const [showModal, setShowModal]= useState(false);
+//new task title state
+  const [newTTitle, onChangeNewTTitle]= useState('');
 //build Alert that will pupub specified buttons when user long-press on a task 
   const createAlert= ()=>{
     Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
@@ -93,6 +96,25 @@ function App(): React.JSX.Element {
         cancelable: true
       }
     )
+  }
+
+// add new task method
+  const addTask= () =>{
+    let newTaskTitle= newTTitle;
+    //check if the new task title is not empty string
+    if(newTaskTitle !== ""){
+      //new task object
+      let newTask= {
+        id: Math.random().toString(36).substring(2, 10),
+        title: newTaskTitle,
+        isDone: false
+      }
+      // push the new task to mytasks array
+      mytasks.push(newTask);
+      //close the modal
+      setShowModal(!showModal);
+    }
+    console.log("Please write something in task title")
   }
 
   const changeTaskStatus= (taskId: string) =>{
@@ -149,12 +171,20 @@ function App(): React.JSX.Element {
           >
             <View style={styles.modalStyle}>
               <View style={styles.modalContent}>
-                <Text style={{fontSize: 20}}>
-                  Hello from Modal
+                <Text style={{fontSize: 20, marginTop: 20}}>
+                  إضافة مهمة جديدة
                 </Text>
-                <Button title='Hide Modal' onPress={()=> setShowModal(!showModal)}>
-                  
-                </Button>
+                <TextInput
+                placeholder='اكتب مهمتك الجديدة هنا'
+                style= {styles.addTaskInput}
+                //new task title state and vlue will change immedietly if user wrote something in add task text input box
+                onChangeText={onChangeNewTTitle}></TextInput>
+                {/* submit the new task button will be disabled and conditionaly styled if add task box still empty  */}
+                <TouchableOpacity disabled={newTTitle == ""} onPress={addTask} style={[styles.addTaskButton, newTTitle=="" && styles.addTaskButtonDisabled]}>
+                  <Text style={{color: 'white', textAlign: "center", fontSize: 18}}>
+                    إضافة المهمة
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>     
           </Modal>
@@ -213,13 +243,39 @@ const styles = StyleSheet.create({
   modalStyle:{
    justifyContent: "center",
    flex: 1,
-   alignItems: "center"
+   alignItems: "center",
+   backgroundColor: "rgba(0, 0, 0, 0.5);"
   },
   modalContent:{
-    borderRadius: 30,
+    borderRadius: 20,
     backgroundColor: "white",
     alignItems: "center",
     textAlign: "center",
+    height: 400,
+    width: 300
+  },
+  addTaskInput: {
+    color: "black",
+    marginTop: 30,
+    borderRadius: 20,
+    borderBlockColor: "red",
+    borderWidth: 2,
+    width: 250,
+    textAlign: "center"
+  },
+  addTaskButton:{
+    marginTop: 30,
+    paddingTop: 10,
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 150,
+    height: 50,
+    alignItems: "center",
+    backgroundColor: "green"
+  },
+  addTaskButtonDisabled:{
+    backgroundColor: '#aaa',
+    opacity: 0.6,
   }
 });
 
