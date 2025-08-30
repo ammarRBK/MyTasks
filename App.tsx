@@ -73,7 +73,7 @@ function App(): React.JSX.Element {
 //show Modal state
   const [showModal, setShowModal]= useState(false);
 //new task title state
-  const [newTTitle, onChangeNewTTitle]= useState('');
+  const [newTTitle, onChangeNewTTitle]= useState("");
 //build Alert that will pupub specified buttons when user long-press on a task 
   const createAlert= ()=>{
     Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
@@ -171,9 +171,13 @@ function App(): React.JSX.Element {
           >
             <View style={styles.modalStyle}>
               <View style={styles.modalContent}>
-                <Text style={{fontSize: 20, marginTop: 20}}>
-                  إضافة مهمة جديدة
-                </Text>
+                <View style={styles.modalHeader}>
+                  <Text style={{fontSize: 20, marginTop: 20}}>
+                    إضافة مهمة جديدة
+                  </Text>
+                  <Icon name='close' onPress={()=> setShowModal(!showModal)} size={24} color={'black'} style={{position: "absolute", right: 170, top: '45%'}}></Icon>
+                </View>
+
                 <TextInput
                 placeholder='اكتب مهمتك الجديدة هنا'
                 style= {styles.addTaskInput}
@@ -240,6 +244,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  modalHeader:{
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative"
+  },
   modalStyle:{
    justifyContent: "center",
    flex: 1,
@@ -256,7 +265,7 @@ const styles = StyleSheet.create({
   },
   addTaskInput: {
     color: "black",
-    marginTop: 30,
+    marginTop: 90,
     borderRadius: 20,
     borderBlockColor: "red",
     borderWidth: 2,
