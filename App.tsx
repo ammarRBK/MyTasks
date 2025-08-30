@@ -95,10 +95,11 @@ function App(): React.JSX.Element {
     )
   }
 
-  const makeTaskDone= (taskId: string) =>{
+  const changeTaskStatus= (taskId: string) =>{
+//loop over tasks
     mytasks.map(task=>{
+//check if task is same as the task id comes from the app and change the task status if is the same
       task.id == taskId ? task.isDone= !task.isDone : task.isDone= task.isDone;
-      
     })
   }
 
@@ -117,7 +118,7 @@ function App(): React.JSX.Element {
                     disabled={false}
 //onpress runs change task status function
                     onPress={()=> {
-                      makeTaskDone(task.item.id)
+                      changeTaskStatus(task.item.id)
                       console.log("item with id "+task.item.id+" pressed")
                     }}
 //when task is completed the checkbox color will be green
