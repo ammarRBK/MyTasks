@@ -95,6 +95,13 @@ function App(): React.JSX.Element {
     )
   }
 
+  const makeTaskDone= (taskId: string) =>{
+    mytasks.map(task=>{
+      task.id == taskId ? task.isDone= !task.isDone : task.isDone= task.isDone;
+      
+    })
+  }
+
   return (
       <SafeAreaProvider>
         <SafeAreaView>
@@ -109,7 +116,10 @@ function App(): React.JSX.Element {
                     isChecked={task.item.isDone ? true : false}
                     disabled={false}
 //onpress runs change task status function
-                    onPress={()=> {console.log("item with id "+task.item.id+" pressed")}}
+                    onPress={()=> {
+                      makeTaskDone(task.item.id)
+                      console.log("item with id "+task.item.id+" pressed")
+                    }}
 //when task is completed the checkbox color will be green
                     fillColor="green"
 //when task isn’t completed the checkbox color will be #757575
