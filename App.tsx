@@ -10,7 +10,9 @@ import {
   useColorScheme,
   View,
   TextInput,
-  Platform
+  Platform,
+  LayoutAnimation,
+  UIManager
 } from 'react-native';
 
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -66,6 +68,10 @@ const hardData= [
 
 function App(): React.JSX.Element {
 
+  //Enable layout animation on Android
+  if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental){
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
   // const isDarkMode = useColorScheme() === 'dark';
 
   // const backgroundStyle = {
@@ -78,7 +84,7 @@ function App(): React.JSX.Element {
 //new task title state
   const [newTTitle, onChangeNewTTitle]= useState("");
 //build Alert that will pupub specified buttons when user long-press on a task 
-  const createAlert= ()=>{
+  const createAlert= (taskId: string)=>{
     Alert.alert("تحرير المهمة", "أختر ماذا تريد أن تفعل مع مهمتك",
       [
         {
@@ -91,7 +97,8 @@ function App(): React.JSX.Element {
         },
         {
           text: "حذف المهمة",
-          onPress: ()=> console.log("Delete Button pressed"),
+          onPress: ()=> deleteTask(taskId),
+          style: 'destructive'
         },
         
       ],
@@ -114,6 +121,8 @@ function App(): React.JSX.Element {
       }
       // push the new task to mytasks array
       mytasks.push(newTask);
+      //empty the task input
+      onChangeNewTTitle('');
       //close the modal
       setShowModal(!showModal);
     }
@@ -130,6 +139,23 @@ function App(): React.JSX.Element {
     setMytasks(updatedTasks);
   }
 
+  const deleteTask = (taskId: string) => {
+    // Animate the layout change
+    LayoutAnimation.configureNext({
+      duration: 250,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+      delete: {
+        type: LayoutAnimation.Types.easeOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+    });
+    //delete task from tasks array
+    const updatedTasks = mytasks.filter(task => task.id !== taskId);
+    setMytasks(updatedTasks);
+  };
+
   return (
       <SafeAreaProvider>
         <SafeAreaView>
@@ -137,25 +163,28 @@ function App(): React.JSX.Element {
           <FlatList
             style={{paddingBottom: 80}}
             data={mytasks}
+            extraData={mytasks} //Important for animation to trigger
             renderItem={(task)=>{
               return(
-                <TouchableOpacity style={styles.tasksBody} onLongPress={createAlert}>
-                   <BouncyCheckbox
-                    isChecked={task.item.isDone ? true : false}
-                    disabled={false}
+                <View style={styles.taskWrapper}>
+                  <TouchableOpacity style={styles.tasksBody} onLongPress={()=>createAlert(task.item.id)}>
+                    <BouncyCheckbox
+                      isChecked={task.item.isDone ? true : false}
+                      disabled={false}
 //onpress runs change task status method
-                    onPress={()=> {
-                      changeTaskStatus(task.item.id)
-                      console.log("item with id "+task.item.id+" pressed")
-                    }}
+                      onPress={()=> {
+                        changeTaskStatus(task.item.id)
+                        console.log("item with id "+task.item.id+" pressed")
+                      }}
 //when task is completed the checkbox color will be green
-                    fillColor="green"
+                      fillColor="green"
 //when task isn’t completed the checkbox color will be #757575
-                    unFillColor="#757575"
-                    size={20}
-                    iconStyle={{marginLeft: 8}}/>
-                  <Text style={[styles.taskTitle, task.item.isDone && styles.taskDoneStyle]}>{task.item.title}</Text>
-                </TouchableOpacity>
+                      unFillColor="#757575"
+                      size={20}
+                      iconStyle={{marginLeft: 8}}/>
+                    <Text style={[styles.taskTitle, task.item.isDone && styles.taskDoneStyle]}>{task.item.title}</Text>
+                  </TouchableOpacity>
+                </View>
               )
             }}
             keyExtractor={item => item.id}
@@ -216,6 +245,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 250,
     borderRadius: 20
+  },
+  taskWrapper: {
+    overflow: 'hidden',
   },
   tasksBody:{
     height: "auto",
