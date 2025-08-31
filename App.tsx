@@ -46,7 +46,7 @@ type tasksType={
   isDone: boolean
 }
 
-const mytasks:tasksType[] = [
+const hardData= [
   {
     id: "1",
     title: "الذهاب الى العمل",
@@ -71,6 +71,8 @@ function App(): React.JSX.Element {
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
+//tasks state for conditional styling
+  const [mytasks, setMytasks]= useState<tasksType[]>(hardData)
 //show Modal state
   const [showModal, setShowModal]= useState(false);
 //new task title state
@@ -120,10 +122,12 @@ function App(): React.JSX.Element {
 
   const changeTaskStatus= (taskId: string) =>{
 //loop over tasks
-    mytasks.map(task=>{
-//check if task is same as the task id comes from the app and change the task status if is the same
-      task.id == taskId ? task.isDone= !task.isDone : task.isDone= task.isDone;
-    })
+    const updatedTasks = mytasks.map(task =>
+//check if task id is same as the task id comes from the user and change the task status if is the same
+      task.id === taskId ? { ...task, isDone: !task.isDone } : task
+    );
+//update tasks array
+    setMytasks(updatedTasks);
   }
 
   return (
@@ -139,7 +143,7 @@ function App(): React.JSX.Element {
                    <BouncyCheckbox
                     isChecked={task.item.isDone ? true : false}
                     disabled={false}
-//onpress runs change task status function
+//onpress runs change task status method
                     onPress={()=> {
                       changeTaskStatus(task.item.id)
                       console.log("item with id "+task.item.id+" pressed")
@@ -148,9 +152,9 @@ function App(): React.JSX.Element {
                     fillColor="green"
 //when task isn’t completed the checkbox color will be #757575
                     unFillColor="#757575"
-                    size={25}
-                    iconStyle={{ marginLeft: 8 }}/>
-                  <Text style={styles.taskTitle}>{task.item.title}</Text>
+                    size={20}
+                    iconStyle={{marginLeft: 8}}/>
+                  <Text style={[styles.taskTitle, task.item.isDone && styles.taskDoneStyle]}>{task.item.title}</Text>
                 </TouchableOpacity>
               )
             }}
@@ -221,12 +225,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 50,
     borderColor: "blue",
+    borderWidth: 2,
     backgroundColor: "pink",
   },
   taskTitle: {
     fontSize: 18,
-    paddingRight: 20,
     margin: 10
+  },
+  taskDoneStyle:{
+    textDecorationLine: 'line-through',
   },
   addButtonContainer:{
     position: 'absolute',
